@@ -19,6 +19,8 @@ const orderRoute = '/order';
 const orderDetailRoute = '/orderDetail';
 const profileRoute = '/profile';
 const searchRoute = '/search';
+const addressRoute = '/address';
+
 const sandboxKey = 'sandbox_bntcz459_6zpmdy8vhqp7ry6w';
 
 const appName = 'Bachhoaxanh';

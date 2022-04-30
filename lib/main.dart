@@ -4,6 +4,7 @@ import 'package:bachhoaxanh/providers/FavoriteProvider.dart';
 import 'package:bachhoaxanh/providers/ProductProvider.dart';
 import 'package:bachhoaxanh/providers/SearchProvider.dart';
 import 'package:bachhoaxanh/providers/UserProvider.dart';
+import 'package:bachhoaxanh/screens/address_screen.dart';
 import 'package:bachhoaxanh/screens/cart_screen.dart';
 import 'package:bachhoaxanh/screens/favor_screen.dart';
 import 'package:bachhoaxanh/screens/home_screen.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         orderRoute: (context) => OrderScreen(),
         orderDetailRoute: (context) => OrderDetailScreen(),
         profileRoute: (context) => ProfileScreen(),
+        addressRoute: (context) => AddressScreen()
       },
       initialRoute: loginRoute,
     );
