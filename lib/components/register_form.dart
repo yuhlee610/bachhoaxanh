@@ -16,6 +16,8 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +147,109 @@ class _RegisterFormState extends State<RegisterForm> {
                     ]),
                 child: Row(
                   children: [
+                    Icon(
+                      Icons.home,
+                      color: Color(0xFFA8AFB9),
+                    ),
+                    SizedBox(
+                      width: 17,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Hãy nhập địa chỉ';
+                          }
+                          return null;
+                        },
+                        controller: addressController,
+                        decoration: InputDecoration(
+                          hintText: 'Địa chỉ',
+                          hintStyle: TextStyle(
+                              color: textColor.withOpacity(0.5),
+                              fontSize: 16,
+                              fontFamily: 'Spartan'),
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                        style: TextStyle(fontSize: 16, fontFamily: 'Spartan'),
+                      ),
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: defaultPadding,
+            ),
+            Container(
+                alignment: Alignment.center,
+                height: 64,
+                margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      )
+                    ]),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.phone,
+                      color: Color(0xFFA8AFB9),
+                    ),
+                    SizedBox(
+                      width: 17,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Hãy nhập số điện thoại';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.phone,
+                        controller: phoneController,
+                        decoration: InputDecoration(
+                          hintText: 'Số điện thoại',
+                          hintStyle: TextStyle(
+                              color: textColor.withOpacity(0.5),
+                              fontSize: 16,
+                              fontFamily: 'Spartan'),
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                        style: TextStyle(fontSize: 16, fontFamily: 'Spartan'),
+                      ),
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: defaultPadding,
+            ),
+            Container(
+                alignment: Alignment.center,
+                height: 64,
+                margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      )
+                    ]),
+                child: Row(
+                  children: [
                     Image.asset('assets/images/pass.png'),
                     SizedBox(
                       width: 17,
@@ -196,13 +301,22 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    bool shouldNavigate = await Provider.of<UserProvider>(context, listen: false).signUp(emailController.text, passwordController.text, nameController.text);
+                    bool shouldNavigate =
+                        await Provider.of<UserProvider>(context, listen: false)
+                            .signUp(
+                                emailController.text,
+                                passwordController.text,
+                                nameController.text,
+                                addressController.text,
+                                phoneController.text);
                     if (shouldNavigate) {
                       Navigator.pushNamed(context, loginRoute);
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Đăng ký thất bại!'),
-                      ),);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Đăng ký thất bại!'),
+                        ),
+                      );
                     }
                   }
                 },

@@ -182,13 +182,12 @@ class _CartScreenState extends State<CartScreen> {
                             '${url}?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
 
                         var payResult = jsonDecode(response.body);
-                        if(payResult['result'] == 'success') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Thanh toan thanh cong'),
-                            ),
-                          );
-                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(payResult['result']),
+                          ),
+                        );
+                        print(payResult['result']);
                       }
                     }
                   },

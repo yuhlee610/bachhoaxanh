@@ -4,7 +4,12 @@ import '../constant.dart';
 import '../models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
-  UserModel user = new UserModel(id: '123', name: 'abc', email: 'aa@gmail.com', phoneNumber: '090888888');
+  UserModel user = new UserModel(
+      id: '123',
+      name: 'abc',
+      email: 'aa@gmail.com',
+      address: ['address1', 'address2'],
+      phoneNumber: '090888888');
 
   ProfileScreen({Key? key}) : super(key: key);
 

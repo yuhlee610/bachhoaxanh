@@ -39,7 +39,8 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> signUp(String email, String password, String name) async {
+  Future<bool> signUp(String email, String password, String name,
+      String address, String phone) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
@@ -51,9 +52,8 @@ class UserProvider with ChangeNotifier {
           'name': name,
           'email': email,
           'uid': result.user?.uid,
-          'phone': '088xxxxxxxx',
-          'cart': [],
-          'favorite': []
+          'phone': phone,
+          'address': [address]
         });
       });
       return true;
