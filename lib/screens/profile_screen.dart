@@ -1,20 +1,17 @@
+import 'package:bachhoaxanh/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import '../models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
-  UserModel user = new UserModel(
-      id: '123',
-      name: 'abc',
-      email: 'aa@gmail.com',
-      address: ['address1', 'address2'],
-      phoneNumber: '090888888');
-
   ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = Provider.of<UserProvider>(context).user;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -37,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(90),
                     child: Image.network(
-                      'https://ui-avatars.com/api/?name=${user.name}&&background=F08080&&color=ffffff',
+                      'https://ui-avatars.com/api/?name=${user.name}&&background=40BFFF&&color=ffffff',
                       fit: BoxFit.cover,
                       width: 72,
                       height: 72,
@@ -120,24 +117,26 @@ class ProfileScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  print('tap Gender');
+                  Navigator.pushNamed(context, updateAddressRoute);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Row(
                     children: [
                       Icon(
-                        Icons.wc_outlined,
+                        Icons.home,
                         color: primaryColor,
                         size: 30,
                       ),
                       SizedBox(
                         width: 16,
                       ),
-                      Text(
-                        'Gender',
-                        style: TextStyle(
-                            fontFamily: 'Spartan', fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: Text(
+                          'Địa chỉ',
+                          style: TextStyle(
+                              fontFamily: 'Spartan', fontWeight: FontWeight.w600),
+                        ),
                       ),
                       SizedBox(
                         width: 16,

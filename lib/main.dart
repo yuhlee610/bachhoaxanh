@@ -13,6 +13,7 @@ import 'package:bachhoaxanh/screens/order_detail_screen.dart';
 import 'package:bachhoaxanh/screens/order_screen.dart';
 import 'package:bachhoaxanh/screens/profile_screen.dart';
 import 'package:bachhoaxanh/screens/register_screen.dart';
+import 'package:bachhoaxanh/screens/update_address_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
         orderRoute: (context) => OrderScreen(),
         orderDetailRoute: (context) => OrderDetailScreen(),
         profileRoute: (context) => ProfileScreen(),
-        addressRoute: (context) => AddressScreen()
+        addressRoute: (context) => AddressScreen(),
+        updateAddressRoute: (context) => UpdateAddressScreen()
       },
       initialRoute: loginRoute,
     );

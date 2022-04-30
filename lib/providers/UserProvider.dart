@@ -13,13 +13,32 @@ class UserProvider with ChangeNotifier {
     _user = value;
   }
 
-  void fetchUser(String email) {
+  void addAddress(String userId, String newAddress) {
     FirebaseFirestore.instance
         .collection('users')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      print(querySnapshot.docs[0]["first_name"]);
-    });
+        .doc(userId)
+        .update({'address': FieldValue.arrayUnion([newAddress])});
+    _user.address.add(newAddress);
+    notifyListeners();
+  }
+
+  void removeAddress(String userId, String rmAddress) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .update({'address': FieldValue.arrayRemove([rmAddress])});
+    _user.address.remove(rmAddress);
+    notifyListeners();
+  }
+
+  void editAddress(String userId, String newAddress, String oldAddress) {
+    int index = _user.address.indexOf(oldAddress);
+    _user.address[index] = newAddress;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .update({'address': _user.address});
+    notifyListeners();
   }
 
   Future<bool> signIn(email, password) async {
