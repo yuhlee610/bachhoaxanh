@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:bachhoaxanh/constant.dart';
 import 'package:bachhoaxanh/models/user.dart';
+import 'package:bachhoaxanh/providers/OrderProvider.dart';
 import 'package:bachhoaxanh/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/cart.dart';
 import '../providers/CartProvider.dart';
 
 class AddressScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class AddressScreen extends StatefulWidget {
 
 class _AddressScreenState extends State<AddressScreen> {
   String selectedAddress = "";
+  TextEditingController newAddressController = new TextEditingController();
 
   Widget _buildAddressCard(String address) {
     return GestureDetector(
@@ -47,6 +50,14 @@ class _AddressScreenState extends State<AddressScreen> {
     );
   }
 
+  int calcTotal(List<Cart> cartList) {
+    int total = 0;
+    cartList.forEach((element) {
+      total = total + element.quantity * element.price;
+    });
+    return total;
+  }
+
   @override
   Widget build(BuildContext context) {
     UserModel currentUser = Provider.of<UserProvider>(context).user;
@@ -62,6 +73,41 @@ class _AddressScreenState extends State<AddressScreen> {
           style: TextStyle(fontFamily: 'Spartan', color: Colors.black),
         ),
         centerTitle: true,
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                          title: Text('Thêm địa chỉ'),
+                          content: TextField(
+                            controller: newAddressController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Địa chỉ',
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('Hủy'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .addAddress(currentUser.id,
+                                        newAddressController.text);
+                                Navigator.pop(context, 'Add');
+                              },
+                              child: const Text('Thêm'),
+                            ),
+                          ],
+                        )),
+                child: Icon(Icons.add),
+              )),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -70,12 +116,20 @@ class _AddressScreenState extends State<AddressScreen> {
                 horizontal: defaultPadding - 8, vertical: defaultPadding),
             child: Column(
               children: [
-                ListView.builder(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: currentUser.address.length,
-                  itemBuilder: (context, index) =>
-                      _buildAddressCard(currentUser.address[index]),
+                Container(
+                  child: currentUser.address.length != 0
+                      ? ListView.builder(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: currentUser.address.length,
+                          itemBuilder: (context, index) =>
+                              _buildAddressCard(currentUser.address[index]),
+                        )
+                      : Text(
+                          'Hãy thêm mới địa chỉ',
+                          style: TextStyle(
+                              fontFamily: 'Spartan', fontSize: 15, height: 1.6),
+                        ),
                 ),
                 Container(
                     height: 64,
@@ -87,25 +141,51 @@ class _AddressScreenState extends State<AddressScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5))),
                       onPressed: () async {
-                        var request = BraintreeDropInRequest(
-                            tokenizationKey: sandboxKey,
-                            collectDeviceData: true,
-                            paypalRequest: BraintreePayPalRequest(
-                                amount: '10.00', displayName: 'ABCD'),
-                            cardEnabled: true);
+                        if (selectedAddress != "") {
+                          int total = calcTotal(cartList);
+                          String bucks = (total / 23000).toStringAsFixed(2);
 
-                        var result = await BraintreeDropIn.start(request);
-                        if (result != null) {
-                          String url =
-                              'http://10.0.2.2:5001/final-project-3176a/us-central1/paypalPayment';
+                          var request = BraintreeDropInRequest(
+                              tokenizationKey: sandboxKey,
+                              collectDeviceData: true,
+                              paypalRequest: BraintreePayPalRequest(
+                                  amount: bucks, displayName: 'Bachhoaxanh'),
+                              cardEnabled: true);
 
-                          var response = await http.post(Uri.parse(
-                              '${url}?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
+                          var result = await BraintreeDropIn.start(request);
+                          if (result != null) {
+                            String url =
+                                'http://10.0.2.2:5001/final-project-3176a/us-central1/paypalPayment';
 
-                          var payResult = jsonDecode(response.body);
+                            var response = await http.post(Uri.parse(
+                                '${url}?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}&amount=${bucks}'));
+
+                            var payResult = jsonDecode(response.body);
+
+                            if (payResult['result'] == 'success') {
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .createOrder(cartList, currentUser.id, total,
+                                      selectedAddress);
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .clearCart(cartList, currentUser.id);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Thanh toán thành công'),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Thanh toán thất bại'),
+                                ),
+                              );
+                            }
+                          }
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(payResult['result']),
+                              content: Text('Vui lòng chọn địa chỉ'),
                             ),
                           );
                         }

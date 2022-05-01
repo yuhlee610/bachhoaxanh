@@ -115,4 +115,17 @@ class CartProvider with ChangeNotifier {
       'quantity': quantity
     });
   }
+
+  void clearCart(List<Cart> cartList, String userId) {
+    cartList.forEach((element) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('cart')
+          .doc(element.id)
+          .delete();
+    });
+    _cartList = [];
+    notifyListeners();
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:bachhoaxanh/providers/CartProvider.dart';
 import 'package:bachhoaxanh/providers/CategoryProvider.dart';
 import 'package:bachhoaxanh/providers/FavoriteProvider.dart';
+import 'package:bachhoaxanh/providers/OrderProvider.dart';
 import 'package:bachhoaxanh/providers/ProductProvider.dart';
 import 'package:bachhoaxanh/providers/SearchProvider.dart';
 import 'package:bachhoaxanh/providers/UserProvider.dart';
@@ -31,6 +32,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => CartProvider()),
       ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ChangeNotifierProvider(create: (_) => SearchProvider()),
+      ChangeNotifierProvider(create: (_) => OrderProvider()),
     ],
     child: const MyApp(),
   ));

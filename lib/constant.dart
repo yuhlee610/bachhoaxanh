@@ -22,6 +22,11 @@ const searchRoute = '/search';
 const addressRoute = '/address';
 const updateAddressRoute = '/updateAddress';
 
-const sandboxKey = 'sandbox_bntcz459_6zpmdy8vhqp7ry6w';
+const packingStatus = 'Đang đóng gói';
+const shippingStaus = 'Đang giao';
+const arrivingStatus = 'Đã giao';
+const successStatus = 'Thành công';
+
+const sandboxKey = 'sandbox_csp9n6wb_7bgb23x3qj9zzvbr';
 
 const appName = 'Bachhoaxanh';
