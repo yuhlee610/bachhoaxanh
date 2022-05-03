@@ -126,9 +126,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.white),
                           child: Icon(
                             Icons.favorite,
-                            color: true == true
-                                ? Colors.red
-                                : Colors.grey.withOpacity(0.8),
+                            color: Colors.red,
                             size: 22,
                           )),
                     )
@@ -161,43 +159,44 @@ class _DetailScreenState extends State<DetailScreen> {
                           numOfItems++;
                         });
                       }
-                    })
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Provider.of<CartProvider>(context, listen: false)
-                      .addToCartFromDetail(
-                          widget.product, currentUser.id, numOfItems);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Đã thêm sản phẩm vào giỏ hàng'),
+                    }),
+                    Expanded(child: SizedBox()),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<CartProvider>(context, listen: false)
+                            .addToCartFromDetail(
+                            widget.product, currentUser.id, numOfItems);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Đã thêm sản phẩm vào giỏ hàng'),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: defaultPadding - 4, top: 12, bottom: 8),
+                        child: Container(
+                            padding: EdgeInsets.all(10),
+                            width: 80,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.15),
+                                    spreadRadius: 3,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                color: Colors.white),
+                            child: Icon(
+                              Icons.add_shopping_cart,
+                              color: primaryColor,
+                              size: 30,
+                            )),
+                      ),
                     ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: defaultPadding - 4, top: 12, bottom: 8),
-                  child: Container(
-                      padding: EdgeInsets.all(10),
-                      width: 80,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.15),
-                              spreadRadius: 3,
-                              blurRadius: 5,
-                              offset: Offset(0, 2),
-                            )
-                          ],
-                          color: Colors.white),
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: primaryColor,
-                        size: 30,
-                      )),
+                  ],
                 ),
               ),
               Padding(
@@ -221,9 +220,11 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, cartRoute);
+          },
           backgroundColor: primaryColor,
-          child: Icon(Icons.shopping_cart)),
+          child: Icon(Icons.shopping_bag_outlined)),
     );
   }
 }

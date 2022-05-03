@@ -9,6 +9,7 @@ import '../components/product_widget.dart';
 import '../constant.dart';
 import '../providers/CategoryProvider.dart';
 import '../providers/ProductProvider.dart';
+import '../providers/SearchProvider.dart';
 import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -19,8 +19,8 @@ class SearchProvider with ChangeNotifier {
         var data = element.data();
         product.add(Product.fromMap(data));
       });
+      _products = product;
+      notifyListeners();
     });
-    _products = product;
-    notifyListeners();
   }
 }
