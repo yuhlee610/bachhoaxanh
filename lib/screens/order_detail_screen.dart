@@ -4,18 +4,19 @@ import 'package:intl/intl.dart';
 import '../components/cart_card.dart';
 import '../constant.dart';
 import '../models/cart.dart';
-import '../models/category.dart';
 import '../models/order.dart';
 import '../models/order_detail.dart';
 
 class OrderDetailScreen extends StatelessWidget {
-  OrderDetailScreen({Key? key}) : super(key: key);
+  Order order;
+  OrderDetailScreen({Key? key, required this.order}) : super(key: key);
 
   OrderDetail _orderDetail = OrderDetail(
       order: Order(
-          transId: 'LQNSU346JK',
+          id: 'LQNSU346JK',
+          address: '123 abc',
           orderStatus: 'Shipping',
-          totalPrice: 229.43,
+          totalPrice: 22943,
           itemsQty: 3),
       cartList: <Cart>[
         Cart(
@@ -261,7 +262,7 @@ class OrderDetailScreen extends StatelessWidget {
                                   color: textLightColor,
                                   fontSize: 16),
                             ),
-                            Text(_orderDetail.order.transId,
+                            Text(_orderDetail.order.id,
                                 style: TextStyle(
                                     fontFamily: 'Spartan', fontSize: 16))
                           ],

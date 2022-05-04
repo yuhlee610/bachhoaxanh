@@ -1,5 +1,8 @@
+import 'package:bachhoaxanh/providers/OrderProvider.dart';
+import 'package:bachhoaxanh/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import '../models/order.dart';
@@ -12,30 +15,17 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  List<Order> orderList = <Order>[
-    Order(
-        transId: 'LQNSU346JK',
-        orderStatus: 'Shipping',
-        totalPrice: 229.43,
-        itemsQty: 3),
-    Order(
-        transId: 'SDG1345KJD',
-        orderStatus: 'Shipping',
-        totalPrice: 229.43,
-        itemsQty: 3),
-    Order(
-        transId: 'LQNSU346JK',
-        orderStatus: 'Shipping',
-        totalPrice: 229.43,
-        itemsQty: 2),
-    Order(
-        transId: 'SDG1345KJD',
-        orderStatus: 'Shipping',
-        totalPrice: 229.43,
-        itemsQty: 4),
-  ];
+  @override
+  void initState() {
+    super.initState();
 
-  Widget _buildOrder(int index) {
+    String userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    Provider.of<OrderProvider>(context, listen:false).getOrders(userId);
+  }
+
+  Widget _buildOrder(Order order) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, orderDetailRoute);
@@ -51,7 +41,7 @@ class _OrderScreenState extends State<OrderScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Text(
-                  orderList[index].transId,
+                  order.id,
                   style: TextStyle(
                       fontFamily: 'Spartan',
                       fontSize: 14,
@@ -62,7 +52,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text(
                   DateFormat.yMMMd()
-                      .format(orderList[index].dateCreate)
+                      .format(order.dateCreate)
                       .toString(),
                   style: TextStyle(
                       fontFamily: 'Spartan',
@@ -80,14 +70,14 @@ class _OrderScreenState extends State<OrderScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Order Status',
+                      'Trạng thái',
                       style: TextStyle(
                           fontFamily: 'Spartan',
                           fontSize: 14,
                           color: textLightColor),
                     ),
                     Text(
-                      orderList[index].orderStatus,
+                      order.orderStatus,
                       style: TextStyle(fontFamily: 'Spartan', fontSize: 14),
                     )
                   ],
@@ -99,14 +89,14 @@ class _OrderScreenState extends State<OrderScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Items',
+                      'Số lượng sản phẩm',
                       style: TextStyle(
                           fontFamily: 'Spartan',
                           fontSize: 14,
                           color: textLightColor),
                     ),
                     Text(
-                      '${orderList[index].itemsQty} Items purchased',
+                      '${order.itemsQty} sản phẩm',
                       style: TextStyle(fontFamily: 'Spartan', fontSize: 14),
                     )
                   ],
@@ -118,14 +108,14 @@ class _OrderScreenState extends State<OrderScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Price',
+                      'Tổng tiền',
                       style: TextStyle(
                           fontFamily: 'Spartan',
                           fontSize: 14,
                           color: textLightColor),
                     ),
                     Text(
-                      '\$${orderList[index].totalPrice}',
+                      numberFormat.format(order.totalPrice) + 'đ',
                       style: TextStyle(
                           fontFamily: 'Spartan',
                           fontSize: 14,
@@ -144,6 +134,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Order> orderList = Provider.of<OrderProvider>(context).orders;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -164,7 +156,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
-                itemBuilder: (context, index) => _buildOrder(index)),
+                itemBuilder: (context, index) => _buildOrder(orderList[index])),
           ),
         ),
       ),

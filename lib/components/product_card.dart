@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constant.dart';
 import '../models/favorite.dart';
@@ -25,6 +26,8 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+
     return GestureDetector(
       onTap: widget.select,
       child: Card(
@@ -74,7 +77,7 @@ class _ProductCardState extends State<ProductCard> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text('${widget.product.price}đ',
+                  Text('${numberFormat.format(widget.product.price)}đ',
                       style: TextStyle(
                           fontFamily: 'Spartan',
                           fontSize: 14,

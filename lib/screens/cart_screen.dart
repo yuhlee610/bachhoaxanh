@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../components/bottom_navigation.dart';
@@ -38,6 +39,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     var cartList = Provider.of<CartProvider>(context).cartList;
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
 
     return Scaffold(
       appBar: AppBar(
@@ -89,7 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: textLightColor),
                   ),
                   Text(
-                    _calcSubtotal(cartList).toString() + 'đ',
+                    numberFormat.format(_calcSubtotal(cartList)) + 'đ',
                     style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Spartan',
@@ -111,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: textLightColor),
                   ),
                   Text(
-                    '15000đ',
+                    numberFormat.format(SHIPPING_COST) + 'đ',
                     style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Spartan',
@@ -130,7 +132,7 @@ class _CartScreenState extends State<CartScreen> {
                     style: TextStyle(fontSize: 16, fontFamily: 'Spartan'),
                   ),
                   Text(
-                    (_calcSubtotal(cartList) + 15000).toString() + 'đ',
+                    numberFormat.format(_calcSubtotal(cartList) + SHIPPING_COST) + 'đ',
                     style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Spartan',

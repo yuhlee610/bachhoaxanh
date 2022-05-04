@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
@@ -17,6 +18,7 @@ class CartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -116,7 +118,7 @@ class CartCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Text('${cart.price}đ',
+                Text('${numberFormat.format(cart.price)}đ',
                     style: TextStyle(
                         fontFamily: 'Spartan',
                         fontSize: 14,

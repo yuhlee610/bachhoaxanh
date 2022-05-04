@@ -1,10 +1,31 @@
 import 'package:bachhoaxanh/constant.dart';
+import 'package:bachhoaxanh/models/order.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/cart.dart';
 
 class OrderProvider with ChangeNotifier {
+  List<Order> _orders = [];
+
+  List<Order> get orders => _orders;
+
+  void getOrders(String userId) {
+    List<Order> ordersTmp = [];
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          querySnapshot.docs.forEach((element) {
+            ordersTmp.add(Order.fromSnapShot(element));
+          });
+          _orders = ordersTmp;
+          notifyListeners();
+    });
+  }
+
   void createOrder(
       List<Cart> cartList, String userId, int total, String address) {
     int quantity = 0;

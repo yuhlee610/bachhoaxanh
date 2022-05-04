@@ -29,4 +29,6 @@ const successStatus = 'Thành công';
 
 const sandboxKey = 'sandbox_csp9n6wb_7bgb23x3qj9zzvbr';
 
+const SHIPPING_COST = 15000;
+
 const appName = 'Bachhoaxanh';

@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
@@ -37,6 +38,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var currentUser = Provider.of<UserProvider>(context).user;
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
 
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +92,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Giá ${widget.product.price}đ',
+                      'Giá ${numberFormat.format(widget.product.price)}đ',
                       style: TextStyle(
                         fontSize: 17,
                         fontFamily: 'Spartan',

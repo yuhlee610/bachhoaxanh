@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constant.dart';
 import '../models/product.dart';
@@ -13,6 +14,8 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       margin: EdgeInsets.only(right: this.isMargin ? 15 : 0),
@@ -50,7 +53,7 @@ class ProductWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 5, bottom: 10),
               child: Text(
-                '${product.price}đ',
+                '${numberFormat.format(product.price)}đ',
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: 'Spartan',
