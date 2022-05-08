@@ -1,7 +1,10 @@
+import 'package:bachhoaxanh/components/order_detail_card.dart';
+import 'package:bachhoaxanh/providers/OrderDetailProvider.dart';
+import 'package:bachhoaxanh/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import '../components/cart_card.dart';
 import '../constant.dart';
 import '../models/cart.dart';
 import '../models/order.dart';
@@ -9,48 +12,16 @@ import '../models/order_detail.dart';
 
 class OrderDetailScreen extends StatelessWidget {
   Order order;
-  OrderDetailScreen({Key? key, required this.order}) : super(key: key);
 
-  OrderDetail _orderDetail = OrderDetail(
-      order: Order(
-          id: 'LQNSU346JK',
-          address: '123 abc',
-          orderStatus: 'Shipping',
-          totalPrice: 22943,
-          itemsQty: 3),
-      cartList: <Cart>[
-        Cart(
-            name: 'Innisfree Green Tea Seed serum',
-            image:
-                'https://cdn.tgdd.vn/Products/Images/2443/88651/bhx/-202108021001475179.jpg',
-            price: 75000,
-            subcategory: 'abc',
-            id: '123',
-            amount: 10,
-            quantity: 3),
-        Cart(
-            id: '123',
-            name: 'Elsheskin Active  Redjuvenating',
-            image:
-                'https://cdn.tgdd.vn/Products/Images/2443/88651/bhx/-202108021001475179.jpg',
-            price: 75000,
-            subcategory: 'abc',
-            amount: 10,
-            quantity: 2),
-        Cart(
-            id: '123',
-            name: 'Cosrx Aloe  Sun Crea SPF 30',
-            image:
-                'https://cdn.tgdd.vn/Products/Images/2443/88651/bhx/-202108021001475179.jpg',
-            price: 75000,
-            subcategory: 'abc',
-            amount: 10,
-            quantity: 1),
-      ],
-      address: '2727 Lakeshore Rd undefined Nampa, Tennessee 78410');
+  OrderDetailScreen({Key? key, required this.order}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+    var currentUserId = Provider.of<UserProvider>(context).user.id;
+    Provider.of<OrderDetailProvider>(context, listen: false).getDetailOrder(currentUserId, order.id);
+    var orderDetail = Provider.of<OrderDetailProvider>(context).orderDetail;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -58,7 +29,7 @@ class OrderDetailScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
         title: Text(
-          'Order Details',
+          'Chi tiết đơn hàng',
           style: TextStyle(fontFamily: 'Spartan', color: Colors.black),
         ),
       ),
@@ -73,30 +44,6 @@ class OrderDetailScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: primaryColor),
-                            child: Icon(
-                              Icons.check,
-                              size: 12,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: primaryColor,
-                        thickness: 1,
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -173,22 +120,17 @@ class OrderDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Packing',
+                        'Đóng gói',
                         style: TextStyle(
                             fontFamily: 'Spartan', color: textLightColor),
                       ),
                       Text(
-                        'Shipping',
+                        'Giao hàng',
                         style: TextStyle(
                             fontFamily: 'Spartan', color: textLightColor),
                       ),
                       Text(
-                        'Arriving',
-                        style: TextStyle(
-                            fontFamily: 'Spartan', color: textLightColor),
-                      ),
-                      Text(
-                        'Success',
+                        'Thành công',
                         style: TextStyle(
                             fontFamily: 'Spartan', color: textLightColor),
                       ),
@@ -208,15 +150,14 @@ class OrderDetailScreen extends StatelessWidget {
                 ListView.builder(
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: _orderDetail.cartList.length,
-                    itemBuilder: (context, index) => CartCard(
-                          cart: _orderDetail.cartList[index],
-                          isDelete: false,
+                    itemCount: orderDetail.length,
+                    itemBuilder: (context, index) => OrderDetailCard(
+                          cart: orderDetail[index],
                         )),
                 Padding(
                   padding: EdgeInsets.only(top: 12, bottom: 12),
                   child: Text(
-                    'Shipping Details',
+                    'Thông tin giao hàng',
                     style: TextStyle(
                         fontFamily: 'Spartan',
                         fontWeight: FontWeight.w600,
@@ -234,7 +175,7 @@ class OrderDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Date Shipping',
+                              'Ngày giao hàng',
                               style: TextStyle(
                                   fontFamily: 'Spartan',
                                   color: textLightColor,
@@ -242,7 +183,7 @@ class OrderDetailScreen extends StatelessWidget {
                             ),
                             Text(
                               DateFormat.yMMMd()
-                                  .format(_orderDetail.order.dateCreate)
+                                  .format(order.dateCreate)
                                   .toString(),
                               style: TextStyle(
                                   fontFamily: 'Spartan', fontSize: 16),
@@ -256,25 +197,7 @@ class OrderDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'No. Resi',
-                              style: TextStyle(
-                                  fontFamily: 'Spartan',
-                                  color: textLightColor,
-                                  fontSize: 16),
-                            ),
-                            Text(_orderDetail.order.id,
-                                style: TextStyle(
-                                    fontFamily: 'Spartan', fontSize: 16))
-                          ],
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Address',
+                              'Mã hóa đơn',
                               style: TextStyle(
                                   fontFamily: 'Spartan',
                                   color: textLightColor,
@@ -284,7 +207,31 @@ class OrderDetailScreen extends StatelessWidget {
                               width: 100,
                             ),
                             Expanded(
-                                child: Text(_orderDetail.address,
+                              child: Text(order.id,
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                      fontFamily: 'Spartan', fontSize: 16)),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Địa chỉ',
+                              style: TextStyle(
+                                  fontFamily: 'Spartan',
+                                  color: textLightColor,
+                                  fontSize: 16),
+                            ),
+                            SizedBox(
+                              width: 100,
+                            ),
+                            Expanded(
+                                child: Text(order.address,
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
                                         fontFamily: 'Spartan',
@@ -299,7 +246,7 @@ class OrderDetailScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 12, bottom: 12),
                   child: Text(
-                    'Payment Details',
+                    'Chi tiết thanh toán',
                     style: TextStyle(
                         fontFamily: 'Spartan',
                         fontWeight: FontWeight.w600,
@@ -317,14 +264,14 @@ class OrderDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Items',
+                              'Sản phẩm',
                               style: TextStyle(
                                   fontFamily: 'Spartan',
                                   color: textLightColor,
                                   fontSize: 16),
                             ),
                             Text(
-                              '\$${_orderDetail.order.totalPrice}',
+                              '${numberFormat.format(order.totalPrice - SHIPPING_COST)}đ',
                               style: TextStyle(
                                   fontFamily: 'Spartan', fontSize: 16),
                             )
@@ -343,7 +290,7 @@ class OrderDetailScreen extends StatelessWidget {
                                   color: textLightColor,
                                   fontSize: 16),
                             ),
-                            Text('\$5.00',
+                            Text('${numberFormat.format(SHIPPING_COST)}đ',
                                 style: TextStyle(
                                     fontFamily: 'Spartan', fontSize: 16))
                           ],
@@ -359,13 +306,13 @@ class OrderDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Total Price',
+                              'Tổng cộng',
                               style: TextStyle(
                                   fontFamily: 'Spartan',
                                   color: textLightColor,
                                   fontSize: 16),
                             ),
-                            Text('\$${_orderDetail.order.totalPrice}',
+                            Text('${numberFormat.format(order.totalPrice)}đ',
                                 style: TextStyle(
                                     fontFamily: 'Spartan',
                                     fontSize: 16,

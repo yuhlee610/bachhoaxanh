@@ -1,5 +1,6 @@
 import 'package:bachhoaxanh/providers/OrderProvider.dart';
 import 'package:bachhoaxanh/providers/UserProvider.dart';
+import 'package:bachhoaxanh/screens/order_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _OrderScreenState extends State<OrderScreen> {
     super.initState();
 
     String userId = Provider.of<UserProvider>(context, listen: false).user.id;
-    Provider.of<OrderProvider>(context, listen:false).getOrders(userId);
+    Provider.of<OrderProvider>(context, listen: false).getOrders(userId);
   }
 
   Widget _buildOrder(Order order) {
@@ -28,7 +29,10 @@ class _OrderScreenState extends State<OrderScreen> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, orderDetailRoute);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OrderDetailScreen(order: order)));
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -51,9 +55,7 @@ class _OrderScreenState extends State<OrderScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text(
-                  DateFormat.yMMMd()
-                      .format(order.dateCreate)
-                      .toString(),
+                  DateFormat.yMMMd().format(order.dateCreate).toString(),
                   style: TextStyle(
                       fontFamily: 'Spartan',
                       fontSize: 14,

@@ -1,6 +1,7 @@
 import 'package:bachhoaxanh/providers/CartProvider.dart';
 import 'package:bachhoaxanh/providers/CategoryProvider.dart';
 import 'package:bachhoaxanh/providers/FavoriteProvider.dart';
+import 'package:bachhoaxanh/providers/OrderDetailProvider.dart';
 import 'package:bachhoaxanh/providers/OrderProvider.dart';
 import 'package:bachhoaxanh/providers/ProductProvider.dart';
 import 'package:bachhoaxanh/providers/SearchProvider.dart';
@@ -33,6 +34,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ChangeNotifierProvider(create: (_) => SearchProvider()),
       ChangeNotifierProvider(create: (_) => OrderProvider()),
+      ChangeNotifierProvider(create: (_) => OrderDetailProvider()),
     ],
     child: const MyApp(),
   ));
@@ -59,7 +61,6 @@ class MyApp extends StatelessWidget {
         cartRoute: (context) => CartScreen(),
         favorRoute: (context) => FavorScreen(),
         orderRoute: (context) => OrderScreen(),
-        orderDetailRoute: (context) => OrderDetailScreen(),
         profileRoute: (context) => ProfileScreen(),
         addressRoute: (context) => AddressScreen(),
         updateAddressRoute: (context) => UpdateAddressScreen()
