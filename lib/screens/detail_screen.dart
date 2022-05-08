@@ -36,9 +36,11 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     var currentUser = Provider.of<UserProvider>(context).user;
     NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+    int finalPrice = (widget.product.price -
+            (widget.product.price * widget.product.sale / 100))
+        .toInt();
 
     return Scaffold(
       appBar: AppBar(
@@ -73,8 +75,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: defaultPadding - 4),
+                padding: const EdgeInsets.only(
+                    left: defaultPadding - 4,
+                    right: defaultPadding - 4,
+                    bottom: defaultPadding - 14),
                 child: Text(
                   widget.product.name,
                   style: TextStyle(
@@ -84,15 +88,31 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
               Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: defaultPadding - 4),
+                child: widget.product.sale > 0
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: 20,
+                        width: 40,
+                        color: hotdealColor,
+                        child: Text(
+                          '-${widget.product.sale}%',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : null,
+              ),
+              Padding(
                 padding: const EdgeInsets.only(
                     left: defaultPadding - 4,
                     right: defaultPadding - 4,
-                    top: 20),
+                    top: 14),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Giá ${numberFormat.format(widget.product.price)}đ',
+                      'Giá ${numberFormat.format(finalPrice)}đ',
                       style: TextStyle(
                         fontSize: 17,
                         fontFamily: 'Spartan',
@@ -167,7 +187,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       onTap: () {
                         Provider.of<CartProvider>(context, listen: false)
                             .addToCartFromDetail(
-                            widget.product, currentUser.id, numOfItems);
+                                widget.product, currentUser.id, numOfItems);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Đã thêm sản phẩm vào giỏ hàng'),

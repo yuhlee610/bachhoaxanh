@@ -19,6 +19,7 @@ class CartCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String userId = Provider.of<UserProvider>(context, listen: false).user.id;
     NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+    int finalPrice = (cart.price - (cart.price * cart.sale / 100)).toInt();
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -118,7 +119,7 @@ class CartCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Text('${numberFormat.format(cart.price)}đ',
+                Text('${numberFormat.format(finalPrice)}đ',
                     style: TextStyle(
                         fontFamily: 'Spartan',
                         fontSize: 14,

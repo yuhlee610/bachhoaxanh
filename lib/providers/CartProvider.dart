@@ -72,6 +72,7 @@ class CartProvider with ChangeNotifier {
             price: element['price'],
             image: element['image'],
             name: element['name'],
+            sale: element['sale'],
             subcategory: element['subcategory']));
       });
 
@@ -94,6 +95,7 @@ class CartProvider with ChangeNotifier {
         'price': element.price,
         'subcategory': element.subcategory,
         'amount': element.amount,
+        'sale': element.sale,
         'quantity': quantity
       });
     });
@@ -112,6 +114,7 @@ class CartProvider with ChangeNotifier {
       'price': product.price,
       'subcategory': product.subcategory,
       'amount': product.amount,
+      'sale': product.sale,
       'quantity': quantity
     });
   }

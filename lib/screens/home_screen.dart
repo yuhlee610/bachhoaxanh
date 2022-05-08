@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
     Provider.of<ProductProvider>(context, listen: false).fetchBestSeller();
+    Provider.of<ProductProvider>(context, listen: false).fetchHotDeals();
     Provider.of<ProductProvider>(context, listen: false)
         .fetchProducts("All", true);
     _scrollController.addListener(() {
@@ -63,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final bestSeller = Provider.of<ProductProvider>(context).bestSeller;
     final selectedSubcategory =
         Provider.of<CategoryProvider>(context).selectedSubcategory;
+    final hotdeals = Provider.of<ProductProvider>(context).hotDeals;
 
     return Scaffold(
       appBar: AppBar(
@@ -139,6 +141,36 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ))
                         .toList(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(defaultPadding, defaultPadding,
+                    defaultPadding, defaultPadding / 2),
+                child: Text(
+                  'Hot deals',
+                  style: TextStyle(fontSize: 18, fontFamily: 'Spartan'),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: defaultPadding - 4),
+                child: SizedBox(
+                  height: 190,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: hotdeals.length,
+                    itemBuilder: (context, index) => ProductWidget(
+                      tap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailScreen(
+                                  product: hotdeals[index],
+                                )));
+                      },
+                      product: hotdeals[index],
+                      isMargin: true,
+                    ),
                   ),
                 ),
               ),

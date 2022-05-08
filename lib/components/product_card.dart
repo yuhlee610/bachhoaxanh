@@ -27,6 +27,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+    int finalPrice = (widget.product.price - (widget.product.price * widget.product.sale / 100)).toInt();
 
     return GestureDetector(
       onTap: widget.select,
@@ -77,7 +78,7 @@ class _ProductCardState extends State<ProductCard> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text('${numberFormat.format(widget.product.price)}đ',
+                  Text('${numberFormat.format(finalPrice)}đ',
                       style: TextStyle(
                           fontFamily: 'Spartan',
                           fontSize: 14,

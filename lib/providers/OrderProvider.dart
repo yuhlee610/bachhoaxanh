@@ -55,6 +55,7 @@ class OrderProvider with ChangeNotifier {
           'name': element.name,
           'image': element.image,
           'price': element.price,
+          'sale': element.sale,
           'subcategory': element.subcategory,
           'amount': element.amount,
           'quantity': element.quantity

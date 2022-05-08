@@ -6,6 +6,7 @@ const textColor = Color(0xFF040415);
 const textLightColor = Color(0xFFACACAC);
 const backgroundColor = Color(0xFFFFFFFF);
 const borderColor = Color(0xFFb6e6ff);
+const hotdealColor = Color(0xFFf5222d);
 
 const defaultPadding = 24.0;
 

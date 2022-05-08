@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Cart {
-  int quantity = 0, price = 0, amount = 0;
+  int quantity = 0, price = 0, amount = 0, sale = 0;
   String image, name, subcategory, id;
 
   Cart(
@@ -11,7 +11,8 @@ class Cart {
       required this.price,
       required this.image,
       required this.name,
-      required this.subcategory});
+      required this.subcategory,
+      required this.sale});
 
   Cart.fromMap(Map<String, dynamic> map)
       : id = map['id'],
@@ -20,6 +21,7 @@ class Cart {
         subcategory = map['subcategory'],
         quantity = map['quantity'],
         amount = map['amount'],
+        sale = map['sale'],
         price = map['price'];
 
   Cart.fromSnapShot(QueryDocumentSnapshot data)
@@ -29,5 +31,6 @@ class Cart {
         subcategory = data['subcategory'],
         quantity = data['quantity'],
         amount = data['amount'],
+        sale = data['sale'],
         price = data['price'];
 }

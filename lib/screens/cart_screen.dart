@@ -31,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
   int _calcSubtotal(List<Cart> cartList) {
     int subtotal = 0;
     cartList.forEach((element) {
-      subtotal = subtotal + element.price * element.quantity;
+      subtotal = (subtotal + element.price * (100 - element.sale) / 100 * element.quantity).toInt();
     });
     return subtotal;
   }
@@ -166,30 +166,6 @@ class _CartScreenState extends State<CartScreen> {
                       );
                     } else {
                       Navigator.pushNamed(context, addressRoute);
-                      // var request = BraintreeDropInRequest(
-                      //     tokenizationKey: sandboxKey,
-                      //     collectDeviceData: true,
-                      //     paypalRequest: BraintreePayPalRequest(
-                      //         amount: '10.00', displayName: 'ABCD'),
-                      //     cardEnabled: true);
-                      //
-                      // var result = await BraintreeDropIn.start(request);
-                      // if (result != null) {
-                      //   print(result.paymentMethodNonce.description);
-                      //   print(result.paymentMethodNonce.nonce);
-                      //
-                      //   String url = 'http://10.0.2.2:5001/final-project-3176a/us-central1/paypalPayment';
-                      //
-                      //   var response = await http.post(Uri.parse(
-                      //       '${url}?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
-                      //
-                      //   var payResult = jsonDecode(response.body);
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     SnackBar(
-                      //       content: Text(payResult['result']),
-                      //     ),
-                      //   );
-                      // }
                     }
                   },
                 ),

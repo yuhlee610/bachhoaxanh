@@ -11,6 +11,7 @@ class OrderDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('en');
+    int finalPrice = (cart.price - (cart.price * cart.sale / 100)).toInt();
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -55,7 +56,7 @@ class OrderDetailCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Text('${numberFormat.format(cart.price)}đ',
+                Text('${numberFormat.format(finalPrice)}đ',
                     style: TextStyle(
                         fontFamily: 'Spartan',
                         fontSize: 14,

@@ -53,9 +53,9 @@ class _AddressScreenState extends State<AddressScreen> {
   int calcTotal(List<Cart> cartList) {
     int total = 0;
     cartList.forEach((element) {
-      total = total + element.quantity * element.price;
+      total = (total + element.price * (100 - element.sale) / 100 * element.quantity).toInt();
     });
-    return total;
+    return total + SHIPPING_COST;
   }
 
   @override

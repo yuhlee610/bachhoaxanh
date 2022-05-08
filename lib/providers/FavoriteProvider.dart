@@ -26,6 +26,7 @@ class FavoriteProvider with ChangeNotifier {
             name: element['name'],
             subcategory: element['subcategory'],
             amount: element['amount'],
+            sale: element['sale'],
             price: element['price']));
       });
 
@@ -70,6 +71,7 @@ class FavoriteProvider with ChangeNotifier {
           'image': product.image[0],
           'price': product.price,
           'subcategory': product.subcategory,
+          'sale': product.sale,
           'amount': product.amount
         });
       }

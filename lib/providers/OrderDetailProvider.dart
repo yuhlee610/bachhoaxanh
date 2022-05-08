@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 class OrderDetailProvider with ChangeNotifier {
   List<Cart> _orderDetail = [];
 
-
   List<Cart> get orderDetail => _orderDetail;
 
   void getDetailOrder(String userId, String orderId) {
