@@ -28,6 +28,11 @@ const shippingStaus = 'Đang giao';
 const arrivingStatus = 'Đã giao';
 const successStatus = 'Thành công';
 
+const bronzeLevel = 'Bronze';
+const silverLevel = 'Silver';
+const goldLevel = 'Gold';
+const diamondLevel = 'Diamond';
+
 const sandboxKey = 'sandbox_csp9n6wb_7bgb23x3qj9zzvbr';
 
 const SHIPPING_COST = 15000;

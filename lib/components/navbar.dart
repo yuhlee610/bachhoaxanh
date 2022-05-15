@@ -80,7 +80,7 @@ class _NavbarState extends State<Navbar> {
                   child: ClipOval(
                     child: Image.network(
                       'https://ui-avatars.com/api/?name=${user
-                          .name}&&background=F08080&&color=ffffff',
+                          .name}&&background=40BFFF&&color=ffffff',
                       fit: BoxFit.cover,
                       width: 90,
                       height: 90,
@@ -105,7 +105,7 @@ class _NavbarState extends State<Navbar> {
               ),
               ListTile(
                 leading: Icon(Icons.all_inbox_rounded),
-                title: Text('Orders', style: TextStyle(fontFamily: 'Spartan')),
+                title: Text('Đơn hàng', style: TextStyle(fontFamily: 'Spartan')),
                 onTap: () => Navigator.pushNamed(context, orderRoute),
               ),
               Divider(),

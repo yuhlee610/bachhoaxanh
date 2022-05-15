@@ -16,13 +16,13 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    String userId = Provider.of<UserProvider>(context, listen: false).user.id;
-    Provider.of<OrderProvider>(context, listen: false).getOrders(userId);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   String userId = Provider.of<UserProvider>(context, listen: false).user.id;
+  //   Provider.of<OrderProvider>(context, listen: false).getOrders(userId);
+  // }
 
   Widget _buildOrder(Order order) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('en');
@@ -145,7 +145,7 @@ class _OrderScreenState extends State<OrderScreen> {
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
         title: Text(
-          'Orders',
+          'Đơn hàng',
           style: TextStyle(fontFamily: 'Spartan', color: Colors.black),
         ),
       ),

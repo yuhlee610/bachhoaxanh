@@ -21,6 +21,38 @@ class UserProvider with ChangeNotifier {
     _user.address.add(newAddress);
     notifyListeners();
   }
+  
+  void updateName(String userId, String newName) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .update({'name': newName});
+    _user.name = newName;
+    notifyListeners();
+  }
+
+  void updatePhone(String userId, String phone) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .update({'phone': phone});
+    _user.phoneNumber = phone;
+    notifyListeners();
+  }
+
+  void changePassword(String currentPassword, String newPassword) async  {
+    final crrUser = await FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(
+        email: _user.email, password: currentPassword);
+
+    crrUser?.reauthenticateWithCredential(cred).then((value) {
+      crrUser.updatePassword(newPassword).then((_) {
+        print("Change password success");
+      }).catchError((error) {
+        print("Password can't be changed" + error.toString());
+      });
+    });
+  }
 
   void removeAddress(String userId, String rmAddress) {
     FirebaseFirestore.instance

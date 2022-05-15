@@ -120,6 +120,21 @@ class _DetailScreenState extends State<DetailScreen> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: finalPrice != widget.product.price ? Text(
+                          numberFormat.format(widget.product.price) + 'đ',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontFamily: 'Spartan',
+                              color: textColor,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.lineThrough
+                          ),
+                        ) : null,
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         setState(() {

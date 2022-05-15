@@ -8,8 +8,10 @@ import '../components/navbar.dart';
 import '../components/product_widget.dart';
 import '../constant.dart';
 import '../providers/CategoryProvider.dart';
+import '../providers/OrderProvider.dart';
 import '../providers/ProductProvider.dart';
 import '../providers/SearchProvider.dart';
+import '../providers/UserProvider.dart';
 import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,6 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<ProductProvider>(context, listen: false).fetchHotDeals();
     Provider.of<ProductProvider>(context, listen: false)
         .fetchProducts("All", true);
+
+    String userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    Provider.of<OrderProvider>(context, listen: false).getOrders(userId);
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
