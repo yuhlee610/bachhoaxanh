@@ -85,7 +85,7 @@ class ProductProvider with ChangeNotifier {
             .collection('products')
             .orderBy('name')
             .startAfter([_latestProd])
-            .limit(1)
+            .limit(2)
             .get()
             .then((querySnapshot) {
               updateProducts(querySnapshot, shouldRenew);
@@ -96,7 +96,7 @@ class ProductProvider with ChangeNotifier {
             .where('subcategory', isEqualTo: subcategory)
             .orderBy('name')
             .startAfter([_latestProd])
-            .limit(1)
+            .limit(2)
             .get()
             .then((querySnapshot) {
               updateProducts(querySnapshot, shouldRenew);

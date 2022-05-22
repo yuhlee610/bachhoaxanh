@@ -15,6 +15,14 @@ class OrderDetailScreen extends StatelessWidget {
 
   OrderDetailScreen({Key? key, required this.order}) : super(key: key);
 
+  int getItemsPrice(List<Cart> orderDetail) {
+    int total = 0;
+    orderDetail.forEach((e) {
+      total = (total + (e.price * (100 - e.sale) / 100) * e.quantity).toInt();
+    });
+    return total;
+  }
+
   @override
   Widget build(BuildContext context) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('en');
@@ -140,7 +148,7 @@ class OrderDetailScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 24, bottom: 12),
                   child: Text(
-                    'Products',
+                    'Sản phẩm',
                     style: TextStyle(
                         fontFamily: 'Spartan',
                         fontWeight: FontWeight.w600,
@@ -271,7 +279,7 @@ class OrderDetailScreen extends StatelessWidget {
                                   fontSize: 16),
                             ),
                             Text(
-                              '${numberFormat.format(order.totalPrice - SHIPPING_COST)}đ',
+                              '${numberFormat.format(getItemsPrice(orderDetail))}đ',
                               style: TextStyle(
                                   fontFamily: 'Spartan', fontSize: 16),
                             )
@@ -291,6 +299,24 @@ class OrderDetailScreen extends StatelessWidget {
                                   fontSize: 16),
                             ),
                             Text('${numberFormat.format(SHIPPING_COST)}đ',
+                                style: TextStyle(
+                                    fontFamily: 'Spartan', fontSize: 16))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Giảm giá',
+                              style: TextStyle(
+                                  fontFamily: 'Spartan',
+                                  color: textLightColor,
+                                  fontSize: 16),
+                            ),
+                            Text(order.discount,
                                 style: TextStyle(
                                     fontFamily: 'Spartan', fontSize: 16))
                           ],

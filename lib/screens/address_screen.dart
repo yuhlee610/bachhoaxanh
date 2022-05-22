@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:bachhoaxanh/constant.dart';
+import 'package:bachhoaxanh/models/order.dart';
 import 'package:bachhoaxanh/models/user.dart';
 import 'package:bachhoaxanh/providers/OrderProvider.dart';
 import 'package:bachhoaxanh/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -50,18 +52,54 @@ class _AddressScreenState extends State<AddressScreen> {
     );
   }
 
-  int calcTotal(List<Cart> cartList) {
+  int calcTotal(List<Cart> cartList, int discount) {
     int total = 0;
     cartList.forEach((element) {
       total = (total + element.price * (100 - element.sale) / 100 * element.quantity).toInt();
     });
-    return total + SHIPPING_COST;
+    total = total + SHIPPING_COST;
+    if(total <= discount) {
+      return 0;
+    }
+    return total - discount;
+  }
+
+  String getLevel(List<Order> orders) {
+    int purchasedAmount = 0;
+    orders.forEach((element) {
+      purchasedAmount = purchasedAmount + element.totalPrice;
+    });
+
+    if (purchasedAmount <= 2000000) return bronzeLevel;
+
+    if (purchasedAmount <= 5000000) return silverLevel;
+
+    if (purchasedAmount <= 10000000) return goldLevel;
+
+    return diamondLevel;
+  }
+
+  int getDiscount(String level) {
+    switch (level) {
+      case bronzeLevel:
+        return 0;
+      case silverLevel:
+        return 10000;
+      case goldLevel:
+        return 20000;
+      default:
+        return 30000;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     UserModel currentUser = Provider.of<UserProvider>(context).user;
     var cartList = Provider.of<CartProvider>(context).cartList;
+    var orders = Provider.of<OrderProvider>(context).orders;
+    String level = getLevel(orders);
+    int discount = getDiscount(level);
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en');
 
     return Scaffold(
       appBar: AppBar(
@@ -142,8 +180,9 @@ class _AddressScreenState extends State<AddressScreen> {
                               borderRadius: BorderRadius.circular(5))),
                       onPressed: () async {
                         if (selectedAddress != "") {
-                          int total = calcTotal(cartList);
+                          int total = calcTotal(cartList, discount);
                           String bucks = (total / 23000).toStringAsFixed(2);
+                          String discountPrice = '${level} (${numberFormat.format(discount)}đ)';
 
                           var request = BraintreeDropInRequest(
                               tokenizationKey: sandboxKey,
@@ -165,7 +204,7 @@ class _AddressScreenState extends State<AddressScreen> {
                             if (payResult['result'] == 'success') {
                               Provider.of<OrderProvider>(context, listen: false)
                                   .createOrder(cartList, currentUser.id, total,
-                                      selectedAddress);
+                                      selectedAddress, discountPrice);
                               Provider.of<CartProvider>(context, listen: false)
                                   .clearCart(cartList, currentUser.id);
 
@@ -174,6 +213,8 @@ class _AddressScreenState extends State<AddressScreen> {
                                   content: Text('Thanh toán thành công'),
                                 ),
                               );
+
+                              Provider.of<OrderProvider>(context, listen: false).getOrders(currentUser.id);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

@@ -27,7 +27,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   void createOrder(
-      List<Cart> cartList, String userId, int total, String address) {
+      List<Cart> cartList, String userId, int total, String address, String discountPrice) {
     int quantity = 0;
     cartList.forEach((element) {
       quantity = quantity + element.quantity;
@@ -41,7 +41,8 @@ class OrderProvider with ChangeNotifier {
       'itemsQty': quantity,
       'dateCreate': new DateTime.now().toString(),
       'orderStatus': packingStatus,
-      'address': address
+      'address': address,
+      'discount': discountPrice
     }).then((orderRef) {
       cartList.forEach((element) {
         FirebaseFirestore.instance
